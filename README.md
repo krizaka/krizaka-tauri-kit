@@ -7,6 +7,7 @@ without a window. Decision: [ADR-005](https://github.com/krizaka/.github/blob/ma
 | :-- | :-- |
 | `scope` | Folder grants, stored as canonical paths. A path is readable only inside a folder the user granted: `..` and symlinks that leave a grant are refused, and the home folder, `/`, `/Users`, `/Volumes`, the system folders, `~/.ssh`, `~/.aws`, `~/Library`… can never be granted |
 | `files` | Listing (folders first, hidden and partial files skipped, links never followed) and previewing (text, image, PDF within limits) inside a grant |
+| `access` | The one gate: a granted folder's file, or a file the OS reported as dropped on the window this session (one file, never its neighbours) |
 | `nav_guard` | A window that shows a hosted web app never leaves its origin: HTTPS (loopback may use http), no credentials, look-alike hosts refused |
 
 ```toml

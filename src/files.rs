@@ -111,7 +111,9 @@ pub fn list_dir(dir: &Path) -> Result<Listing, String> {
             break;
         }
         // `symlink_metadata`: a link is reported as a link and never followed here.
-        let Ok(meta) = item.path().symlink_metadata() else { continue };
+        let Ok(meta) = item.path().symlink_metadata() else {
+            continue;
+        };
         if meta.file_type().is_symlink() {
             continue;
         }
@@ -122,7 +124,11 @@ pub fn list_dir(dir: &Path) -> Result<Listing, String> {
             .map(|d| d.as_secs())
             .unwrap_or(0);
         entries.push(Entry {
-            kind: if meta.is_dir() { "folder".into() } else { kind_of(&name).into() },
+            kind: if meta.is_dir() {
+                "folder".into()
+            } else {
+                kind_of(&name).into()
+            },
             path: item.path().display().to_string(),
             is_dir: meta.is_dir(),
             size: if meta.is_dir() { 0 } else { meta.len() },
@@ -143,7 +149,10 @@ pub fn preview(file: &Path) -> Result<Preview, String> {
     if !meta.is_file() {
         return Err("not a file".into());
     }
-    let name = file.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default();
+    let name = file
+        .file_name()
+        .map(|n| n.to_string_lossy().to_string())
+        .unwrap_or_default();
     let kind = kind_of(&name);
     let mut p = Preview {
         mime: mime_of(&name).into(),

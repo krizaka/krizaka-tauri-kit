@@ -50,8 +50,22 @@ const SENSITIVE_HOME_DIRS: &[&str] = &[
 
 /// System locations that can never be granted (they are broad, or hold other programs' data).
 const FORBIDDEN_ABSOLUTE: &[&str] = &[
-    "/", "/System", "/Library", "/Users", "/Volumes", "/private", "/etc", "/usr", "/bin", "/sbin",
-    "/var", "/opt", "/Applications", "/dev", "/cores", "/tmp",
+    "/",
+    "/System",
+    "/Library",
+    "/Users",
+    "/Volumes",
+    "/private",
+    "/etc",
+    "/usr",
+    "/bin",
+    "/sbin",
+    "/var",
+    "/opt",
+    "/Applications",
+    "/dev",
+    "/cores",
+    "/tmp",
 ];
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -187,7 +201,15 @@ fn check_grantable(canon: &Path, home: Option<&Path>) -> Result<(), ScopeError> 
             return Err(ScopeError::Forbidden(shown));
         }
     }
-    for f in ["/System", "/Library", "/usr", "/bin", "/sbin", "/etc", "/private/etc"] {
+    for f in [
+        "/System",
+        "/Library",
+        "/usr",
+        "/bin",
+        "/sbin",
+        "/etc",
+        "/private/etc",
+    ] {
         if canon.starts_with(f) {
             return Err(ScopeError::Forbidden(shown));
         }
@@ -214,8 +236,12 @@ mod tests {
         let h = fake_home();
         let home = h.path().canonicalize().unwrap();
         let mut s = ScopeStore::default();
-        let root = s.grant_with_home(&home.join("Documents"), Some(&home)).unwrap();
-        assert!(s.resolve_with_home(&root.join("clients/a.pdf"), Some(&home)).is_ok());
+        let root = s
+            .grant_with_home(&home.join("Documents"), Some(&home))
+            .unwrap();
+        assert!(s
+            .resolve_with_home(&root.join("clients/a.pdf"), Some(&home))
+            .is_ok());
     }
 
     #[test]
@@ -223,13 +249,22 @@ mod tests {
         let h = fake_home();
         let home = h.path().canonicalize().unwrap();
         let mut s = ScopeStore::default();
-        assert!(matches!(s.grant_with_home(&home, Some(&home)), Err(ScopeError::Forbidden(_))));
-        assert!(matches!(s.grant_with_home(Path::new("/"), Some(&home)), Err(ScopeError::Forbidden(_))));
+        assert!(matches!(
+            s.grant_with_home(&home, Some(&home)),
+            Err(ScopeError::Forbidden(_))
+        ));
+        assert!(matches!(
+            s.grant_with_home(Path::new("/"), Some(&home)),
+            Err(ScopeError::Forbidden(_))
+        ));
         assert!(matches!(
             s.grant_with_home(&home.join(".ssh"), Some(&home)),
             Err(ScopeError::Forbidden(_))
         ));
-        assert!(matches!(s.grant_with_home(Path::new("/System"), Some(&home)), Err(ScopeError::Forbidden(_))));
+        assert!(matches!(
+            s.grant_with_home(Path::new("/System"), Some(&home)),
+            Err(ScopeError::Forbidden(_))
+        ));
         assert!(s.roots().is_empty());
     }
 
@@ -250,7 +285,9 @@ mod tests {
         let h = fake_home();
         let home = h.path().canonicalize().unwrap();
         let mut s = ScopeStore::default();
-        let root = s.grant_with_home(&home.join("Documents"), Some(&home)).unwrap();
+        let root = s
+            .grant_with_home(&home.join("Documents"), Some(&home))
+            .unwrap();
         let escape = root.join("clients/../../.ssh/id_ed25519");
         assert!(matches!(
             s.resolve_with_home(&escape, Some(&home)),
@@ -268,8 +305,11 @@ mod tests {
         let h = fake_home();
         let home = h.path().canonicalize().unwrap();
         let mut s = ScopeStore::default();
-        let root = s.grant_with_home(&home.join("Documents"), Some(&home)).unwrap();
-        std::os::unix::fs::symlink(home.join(".ssh/id_ed25519"), root.join("innocent.txt")).unwrap();
+        let root = s
+            .grant_with_home(&home.join("Documents"), Some(&home))
+            .unwrap();
+        std::os::unix::fs::symlink(home.join(".ssh/id_ed25519"), root.join("innocent.txt"))
+            .unwrap();
         assert!(matches!(
             s.resolve_with_home(&root.join("innocent.txt"), Some(&home)),
             Err(ScopeError::OutsideScope(_))
@@ -281,10 +321,16 @@ mod tests {
         let h = fake_home();
         let home = h.path().canonicalize().unwrap();
         let mut s = ScopeStore::default();
-        let child = s.grant_with_home(&home.join("Documents/clients"), Some(&home)).unwrap();
-        let parent = s.grant_with_home(&home.join("Documents"), Some(&home)).unwrap();
-        assert_eq!(s.roots(), &[parent.clone()]);
-        assert!(s.resolve_with_home(&child.join("a.pdf"), Some(&home)).is_ok());
+        let child = s
+            .grant_with_home(&home.join("Documents/clients"), Some(&home))
+            .unwrap();
+        let parent = s
+            .grant_with_home(&home.join("Documents"), Some(&home))
+            .unwrap();
+        assert_eq!(s.roots(), std::slice::from_ref(&parent));
+        assert!(s
+            .resolve_with_home(&child.join("a.pdf"), Some(&home))
+            .is_ok());
         assert!(s.revoke(&parent));
         assert!(matches!(
             s.resolve_with_home(&child.join("a.pdf"), Some(&home)),
@@ -299,11 +345,14 @@ mod tests {
         let home = h.path().canonicalize().unwrap();
         let file = h.path().join("data/scope.json");
         let mut s = ScopeStore::default();
-        s.grant_with_home(&home.join("Documents"), Some(&home)).unwrap();
+        s.grant_with_home(&home.join("Documents"), Some(&home))
+            .unwrap();
         s.save(&file).unwrap();
         let loaded = ScopeStore::load_with_home(&file, Some(&home));
         assert_eq!(loaded.roots().len(), 1);
         fs::remove_dir_all(home.join("Documents")).unwrap();
-        assert!(ScopeStore::load_with_home(&file, Some(&home)).roots().is_empty());
+        assert!(ScopeStore::load_with_home(&file, Some(&home))
+            .roots()
+            .is_empty());
     }
 }
