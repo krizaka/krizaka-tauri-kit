@@ -94,12 +94,9 @@ impl ScopeStore {
         store
     }
 
+    /// Written atomically: a crash mid-write never loses the grants.
     pub fn save(&self, file: &Path) -> Result<(), ScopeError> {
-        if let Some(dir) = file.parent() {
-            fs::create_dir_all(dir).map_err(|e| ScopeError::Io(e.to_string()))?;
-        }
-        let json = serde_json::to_string_pretty(self).map_err(|e| ScopeError::Io(e.to_string()))?;
-        fs::write(file, json).map_err(|e| ScopeError::Io(e.to_string()))
+        crate::settings::save(file, self).map_err(ScopeError::Io)
     }
 
     /// Grants a folder (idempotent). Returns the canonical path stored.

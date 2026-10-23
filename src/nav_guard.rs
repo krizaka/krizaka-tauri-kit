@@ -1,4 +1,5 @@
-//! The navigation guard of a window that shows a hosted web app: it may never leave the app's origin.
+//! The navigation guard: a window stays on the app's own pages (its local page, or the hosted web app it shows); a web link
+//! elsewhere opens in the person's browser; anything else is refused.
 
 use url::Url;
 
@@ -26,9 +27,112 @@ pub fn same_origin(allowed: &str, target: &Url) -> bool {
         .unwrap_or(false)
 }
 
+/// What the window does with a navigation.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Navigation {
+    /// One of the app's own places: the window goes there.
+    Stay,
+    /// A web page elsewhere: the window stays, the person's browser opens it.
+    Browser,
+    /// Anything else (`file:`, `javascript:`, `data:`, another app's scheme): nothing happens.
+    Refuse,
+}
+
+/// The same place: scheme, host and port. Unlike [`same_origin`], it also matches the app's own local page
+/// (`tauri://localhost`), whose origin the URL standard calls opaque.
+pub fn same_place(allowed: &str, target: &Url) -> bool {
+    let Ok(a) = Url::parse(allowed) else {
+        return false;
+    };
+    a.scheme() == target.scheme()
+        && a.host_str().is_some()
+        && a.host_str() == target.host_str()
+        && a.port_or_known_default() == target.port_or_known_default()
+        && target.username().is_empty()
+        && target.password().is_none()
+}
+
+/// Decides a navigation of a window whose own places are `allowed` (the local page, the hosted app's origin).
+pub fn decide(allowed: &[String], target: &Url) -> Navigation {
+    if allowed.iter().any(|a| same_place(a, target)) {
+        return Navigation::Stay;
+    }
+    match target.scheme() {
+        // The page's own blank frame and the object URLs it made (a PDF shown from memory).
+        "about" if target.as_str() == "about:blank" => Navigation::Stay,
+        "blob" => match Url::parse(target.path()) {
+            Ok(inner) if allowed.iter().any(|a| same_place(a, &inner)) => Navigation::Stay,
+            _ => Navigation::Refuse,
+        },
+        "https" | "http" | "mailto"
+            if target.username().is_empty() && target.password().is_none() =>
+        {
+            Navigation::Browser
+        }
+        _ => Navigation::Refuse,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn places() -> Vec<String> {
+        vec![
+            "tauri://localhost".into(),
+            "https://www.yomizaka.com".into(),
+        ]
+    }
+
+    fn at(url: &str) -> Url {
+        Url::parse(url).unwrap()
+    }
+
+    #[test]
+    fn the_window_stays_on_its_own_places() {
+        for own in [
+            "tauri://localhost/index.html",
+            "https://www.yomizaka.com/app/rapports",
+            "about:blank",
+            "blob:tauri://localhost/5f1c-77",
+        ] {
+            assert_eq!(decide(&places(), &at(own)), Navigation::Stay, "{own}");
+        }
+    }
+
+    #[test]
+    fn a_web_page_elsewhere_opens_in_the_browser_and_the_rest_is_refused() {
+        for web in [
+            "https://www.krizaka.com/privacy",
+            "http://example.com/",
+            "mailto:support@krizaka.com",
+        ] {
+            assert_eq!(decide(&places(), &at(web)), Navigation::Browser, "{web}");
+        }
+        for refused in [
+            "file:///etc/passwd",
+            "javascript:alert(1)",
+            "data:text/html,<script>1</script>",
+            "orazaka://app",
+            "tauri://evil",
+            "blob:https://evil.example/1",
+            "https://user:pw@evil.example/",
+        ] {
+            assert_eq!(
+                decide(&places(), &at(refused)),
+                Navigation::Refuse,
+                "{refused}"
+            );
+        }
+        assert_eq!(
+            decide(&places(), &at("https://www.yomizaka.com.evil.example/")),
+            Navigation::Browser
+        );
+        assert_eq!(
+            decide(&places(), &at("https://www.yomizaka.com:8443/")),
+            Navigation::Browser
+        );
+    }
 
     #[test]
     fn an_origin_is_https_or_loopback_and_reduced_to_its_origin() {

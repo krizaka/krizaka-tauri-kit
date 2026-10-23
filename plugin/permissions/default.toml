@@ -1,0 +1,23 @@
+"$schema" = "schemas/schema.json"
+
+[default]
+description = """
+What the page of a Krizaka Mac app may ask the native side: the folders the person granted (grant with the native picker,
+revoke, list, watch), small secrets in the Keychain (the session token), the native menu, the deep links that arrived, the update channel.
+No path is read without going through the folder scope; no file system, shell or opener permission is given to the page.
+"""
+permissions = [
+  "allow-folders",
+  "allow-grant-folder",
+  "allow-revoke-folder",
+  "allow-list-folder",
+  "allow-watch-folder",
+  "allow-unwatch-folder",
+  "allow-secret-get",
+  "allow-secret-set",
+  "allow-secret-remove",
+  "allow-set-menu",
+  "allow-take-links",
+  "allow-update-channel",
+  "allow-set-update-channel",
+]
