@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-update-channel"
+description = "Enables the update_channel command without any pre-configured scope."
+commands.allow = ["update_channel"]
+
+[[permission]]
+identifier = "deny-update-channel"
+description = "Denies the update_channel command without any pre-configured scope."
+commands.deny = ["update_channel"]
