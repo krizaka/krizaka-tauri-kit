@@ -1,5 +1,7 @@
 # krizaka-tauri-kit
 
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=krizaka_krizaka-tauri-kit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=krizaka_krizaka-tauri-kit) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_krizaka-tauri-kit&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_krizaka-tauri-kit) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_krizaka-tauri-kit&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_krizaka-tauri-kit) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_krizaka-tauri-kit&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_krizaka-tauri-kit) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=krizaka_krizaka-tauri-kit&metric=coverage)](https://sonarcloud.io/summary/new_code?id=krizaka_krizaka-tauri-kit)
+
 What every Krizaka **macOS app** (Tauri 2) shares, written once. Decision:
 [ADR-005](https://github.com/krizaka/.github/blob/main/docs/adr/ADR-005-tauri-app-kit.md).
 
