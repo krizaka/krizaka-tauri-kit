@@ -1,5 +1,7 @@
 # template-tauri-app
 
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=coverage)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app)
+
 Start a Krizaka **Mac app** (Tauri 2) from this template. It only *wires*: what every Mac app does the same way (the folder scope,
 dropped and watched files, the Keychain session, the native menu, deep links, the navigation guard, the update channel) is
 `tauri-plugin-krizaka` of [`krizaka-tauri-kit`](https://github.com/krizaka/krizaka-tauri-kit) and its typed page side
