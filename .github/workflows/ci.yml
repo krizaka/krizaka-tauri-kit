@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# The org's reusable Node pipeline (krizaka/.github node-ci.yml) for the app's web UI: types, unit tests and the Vite build.
+# The Rust side (fmt, clippy, tests) and the .dmg are the desktop pipeline's (desktop.yml, tauri-macos.yml).
+jobs:
+  ci:
+    permissions:
+      contents: read
+    uses: krizaka/.github/.github/workflows/node-ci.yml@944b6e5283428852f463b108b7ec9cd2647345fe # main
+    with:
+      package-manager: pnpm
+      lint-script: ""
+      typecheck-script: typecheck
+      test-script: test
+      build-script: "build:ui"
