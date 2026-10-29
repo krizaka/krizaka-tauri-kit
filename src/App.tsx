@@ -36,7 +36,8 @@ export function App() {
         label={t("app.name")}
         brand={
           <>
-            <ProductLogo id={PRODUCT as Parameters<typeof ProductLogo>[0]["id"]} size={22} animated={false} /> {t("app.name")}
+            <ProductLogo id={PRODUCT as Parameters<typeof ProductLogo>[0]["id"]} size={22} animated={false} />{" "}
+            {t("app.name")}
           </>
         }
         collapseLabels={[t("shell.collapse"), t("shell.expand")]}
@@ -45,7 +46,15 @@ export function App() {
         <AppShell.Item href="#/" icon={<LocalIcon size={16} />} label={t("folders.title")} current />
       </AppShell.Sidebar>
       <AppShell.Body>
-        <AppShell.Header title={t("folders.title")} menuLabel={t("shell.menu")} actions={<Button size="sm" variant="primary" onClick={add}>{t("folders.add")}</Button>} />
+        <AppShell.Header
+          title={t("folders.title")}
+          menuLabel={t("shell.menu")}
+          actions={
+            <Button size="sm" variant="primary" onClick={add}>
+              {t("folders.add")}
+            </Button>
+          }
+        />
         <AppShell.Main className="space-y-4">
           <p className="text-fg-secondary">{t("app.tagline")}</p>
           {granted.length === 0 ? <p className="text-fg-secondary">{t("folders.empty")}</p> : null}

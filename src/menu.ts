@@ -11,6 +11,11 @@ export function menuSpec(menu: Messages["menu"]): MenuSpec {
   const { file, addFolder, ...labels } = menu;
   return {
     labels,
-    menus: [{ title: file, items: [{ id: "folders.add", label: addFolder, accelerator: acceleratorOf(SHORTCUTS.addFolder) }] }],
+    menus: [
+      {
+        title: file,
+        items: [{ id: "folders.add", label: addFolder, accelerator: acceleratorOf(SHORTCUTS.addFolder) }],
+      },
+    ],
   };
 }

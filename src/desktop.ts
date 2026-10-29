@@ -1,4 +1,11 @@
-import { createFolders, createUpdates, followLinks, keychainStorage, setNativeMenu, type TauriBridge } from "@krizaka/app-desktop";
+import {
+  createFolders,
+  createUpdates,
+  followLinks,
+  keychainStorage,
+  setNativeMenu,
+  type TauriBridge,
+} from "@krizaka/app-desktop";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 

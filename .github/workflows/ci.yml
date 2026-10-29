@@ -21,7 +21,7 @@ jobs:
     uses: krizaka/.github/.github/workflows/node-ci.yml@944b6e5283428852f463b108b7ec9cd2647345fe # main
     with:
       package-manager: pnpm
-      lint-script: ""
+      lint-script: lint
       typecheck-script: typecheck
       test-script: test
       build-script: "build:ui"

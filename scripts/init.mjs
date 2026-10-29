@@ -10,8 +10,10 @@ import { pathToFileURL } from "node:url";
 const SLUG = /^[a-z][a-z0-9]{2,23}$/;
 
 export function validate(slug, name) {
-  if (!SLUG.test(slug ?? "")) throw new Error("slug: lowercase letters and digits, 3 to 24 characters, starting with a letter");
-  if (!name || name.trim() !== name || name.length > 40) throw new Error("name: the product's name, at most 40 characters");
+  if (!SLUG.test(slug ?? ""))
+    throw new Error("slug: lowercase letters and digits, 3 to 24 characters, starting with a letter");
+  if (!name || name.trim() !== name || name.length > 40)
+    throw new Error("name: the product's name, at most 40 characters");
 }
 
 export function fill(text, slug, name) {
@@ -21,7 +23,15 @@ export function fill(text, slug, name) {
 function textFiles() {
   return execFileSync("git", ["ls-files"], { encoding: "utf8" })
     .split("\n")
-    .filter((f) => f && !/\.(png|jpe?g|ico|icns|woff2?|ttf|lock)$/.test(f) && !f.startsWith("LICENSE") && f !== "scripts/init.mjs" && f !== "scripts/init.test.mjs" && f !== "pnpm-lock.yaml");
+    .filter(
+      (f) =>
+        f &&
+        !/\.(png|jpe?g|ico|icns|woff2?|ttf|lock)$/.test(f) &&
+        !f.startsWith("LICENSE") &&
+        f !== "scripts/init.mjs" &&
+        f !== "scripts/init.test.mjs" &&
+        f !== "pnpm-lock.yaml",
+    );
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
