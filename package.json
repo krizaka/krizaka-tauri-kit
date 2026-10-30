@@ -9,7 +9,7 @@
     "dev": "vite",
     "build:ui": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run && node --test scripts/init.test.mjs",
+    "test": "vitest run && node --test scripts/init.test.mjs scripts/desktop-workflow.test.mjs",
     "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
     "check": "pnpm typecheck && pnpm test && pnpm test:rust",
     "tauri": "tauri",

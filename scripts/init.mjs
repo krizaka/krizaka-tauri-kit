@@ -2,7 +2,7 @@
 // Starts a product from this template: node scripts/init.mjs <slug> "<Name>"
 //   slug  lowercase, letters and digits (`yomizaka`): the scheme, the bundle id com.krizaka.<slug>, the domain <slug>.com
 //   Name  how the product is written (`Yomizaka`)
-// Replaces `__slug__` and `__Name__` in every text file of the repository, then removes nothing: git shows what changed.
+// Replaces `__slug__`, `__Name__` and the bundle-id placeholder in every text file of the repository, then removes nothing: git shows what changed.
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -16,8 +16,14 @@ export function validate(slug, name) {
     throw new Error("name: the product's name, at most 40 characters");
 }
 
+// Tauri refuses `_` in a bundle identifier, so tauri.conf.json carries this valid placeholder instead of `__slug__`.
+export const BUNDLE_PLACEHOLDER = "com.krizaka.template-app.desktop";
+
 export function fill(text, slug, name) {
-  return text.replaceAll("__slug__", slug).replaceAll("__Name__", name);
+  return text
+    .replaceAll(BUNDLE_PLACEHOLDER, `com.krizaka.${slug}.desktop`)
+    .replaceAll("__slug__", slug)
+    .replaceAll("__Name__", name);
 }
 
 function textFiles() {
