@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { fill, validate } from "./init.mjs";
@@ -17,4 +18,11 @@ test("fills every placeholder, as many times as it appears", () => {
     fill("com.krizaka.__slug__ / __Name__ / __Name__", "akinaza", "Akinaza"),
     "com.krizaka.akinaza / Akinaza / Akinaza",
   );
+});
+
+test("the stylesheet imports a brand the tokens package exports, never a placeholder (CI was red on main)", () => {
+  const css = readFileSync(new URL("../src/styles.css", import.meta.url), "utf8");
+  const brands = [...css.matchAll(/@krizaka\/tokens\/brands\/([\w-]+)\.css/g)].map((m) => m[1]);
+  assert.ok(brands.length > 0);
+  for (const brand of brands) assert.ok(["krizaka", "scoped", "akinaza", "orazaka", "yomizaka"].includes(brand), brand);
 });

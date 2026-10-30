@@ -3,7 +3,7 @@
 @import "tailwindcss";
 @import "@krizaka/tailwind";
 @import "@krizaka/ui/tailwind.css";
-@import "@krizaka/tokens/brands/__slug__.css";
+@import "@krizaka/tokens/brands/krizaka.css"; /* the product swaps this for its own brand once @krizaka/tokens ships it (akinaza, orazaka, yomizaka...) */
 
 html,
 body,
