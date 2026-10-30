@@ -46,7 +46,10 @@ export async function until(what, check, { timeoutMs, everyMs = 500, sleep = (ms
     } catch (error) {
       last = error;
     }
-    if (now() >= deadline) throw new Error(`timed out waiting for ${what}${last ? ` (${last.message})` : ""}`);
+    if (now() >= deadline) {
+      const detail = last ? ` (${last.message})` : "";
+      throw new Error(`timed out waiting for ${what}${detail}`);
+    }
     await sleep(everyMs);
   }
 }

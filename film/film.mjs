@@ -31,7 +31,7 @@ export const BLANK_BYTES = 4000;
 
 /** Leading frames that are blank are dropped: the film starts on the first screen that shows something. */
 export function trimStart(frames) {
-  const first = frames.findIndex((f) => !(f.size < BLANK_BYTES));
+  const first = frames.findIndex((f) => f.size >= BLANK_BYTES);
   return first < 0 ? [] : frames.slice(first);
 }
 
@@ -92,11 +92,11 @@ export function createFilm({
 } = {}) {
   const frames = [];
   const origin = now();
-  let running = false;
+  const state = { running: false };
   let loop = Promise.resolve();
   const interval = 1000 / fps;
   async function run() {
-    while (running) {
+    while (state.running) {
       const began = now();
       try {
         const png = await shoot();
@@ -104,7 +104,7 @@ export function createFilm({
           const file = join(FRAMES_DIR, frameName(frames.length + 1));
           const bytes = Buffer.from(png, "base64");
           save(join(dir, file), bytes);
-          frames.push({ file, at: began - origin, size: bytes.length, hash: createHash("sha1").update(bytes).digest("hex") });
+          frames.push({ file, at: began - origin, size: bytes.length, hash: createHash("sha256").update(bytes).digest("hex") });
         }
       } catch {
         // a screenshot the window could not give (a transition): the next one will do
@@ -118,10 +118,10 @@ export function createFilm({
       return frames.length;
     },
     start() {
-      if (!dir || running) return;
+      if (!dir || state.running) return;
       if (!shoot) throw new Error("the film needs a way to take a screenshot of the window");
       makeDir(join(dir, FRAMES_DIR));
-      running = true;
+      state.running = true;
       loop = run();
     },
     /** Resolves when the recording has ended (stopped or cancelled). */
@@ -130,10 +130,10 @@ export function createFilm({
     },
     /** Ends the recording at once without waiting for the frame in flight. */
     cancel() {
-      running = false;
+      state.running = false;
     },
     async stop() {
-      running = false;
+      state.running = false;
       await loop;
     },
     finish(min = MIN_FRAMES) {
