@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-krizaka"
-version = "0.2.0"
+version = "0.3.0"
 description = "The Tauri side of krizaka-tauri-kit: folder grants, dropped files, watched folders, the Keychain session, the native menu, deep links and the navigation guard of a Krizaka Mac app"
 authors = ["Krizaka"]
 edition = "2021"
@@ -10,12 +10,11 @@ repository = "https://github.com/krizaka/krizaka-tauri-kit"
 links = "tauri-plugin-krizaka"
 
 [dependencies]
-krizaka-tauri-kit = { path = ".." }
+krizaka-tauri-kit = { path = "..", features = ["keychain"] }
 tauri = { version = "2", features = [] }
 tauri-plugin-dialog = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-keyring = "4"
 notify = "8"
 url = "2"
 

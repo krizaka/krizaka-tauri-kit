@@ -1,6 +1,6 @@
 [package]
 name = "krizaka-tauri-kit"
-version = "0.2.0"
+version = "0.3.0"
 description = "What every Krizaka macOS app shares: folder grants checked on canonical paths, files inside a grant, the navigation guard, deep links, the menu bar, the session token, settings and the update channel"
 authors = ["Krizaka"]
 edition = "2021"
@@ -13,6 +13,11 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 base64 = "0.23"
 url = "2"
+keyring = { version = "4", optional = true }
+
+[features]
+# the macOS Keychain store of the secrets (the plugin and apps without the plugin use it)
+keychain = ["dep:keyring"]
 
 [dev-dependencies]
 tempfile = "3"
