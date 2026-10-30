@@ -2,9 +2,8 @@
 // Starts a product from this template: node scripts/init.mjs <slug> "<Name>"
 //   slug  lowercase, letters and digits (`yomizaka`): the scheme, the bundle id com.krizaka.<slug>, the domain <slug>.com
 //   Name  how the product is written (`Yomizaka`)
-// Replaces `__slug__`, `__Name__` and the bundle-id placeholder in every text file of the repository, then removes nothing: git shows what changed.
-import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+// Replaces `__slug__`, `__Name__` and the bundle-id placeholder in every text file of the folder, then removes nothing.
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 const SLUG = /^[a-z][a-z0-9]{2,23}$/;
@@ -27,8 +26,11 @@ export function fill(text, slug, name) {
 }
 
 function textFiles() {
-  return execFileSync("git", ["ls-files"], { encoding: "utf8" })
-    .split("\n")
+  // A walk of the folder, not `git ls-files`: the template is copied with degit, which leaves no repository behind.
+  return readdirSync(".", { recursive: true, withFileTypes: true })
+    .filter((e) => e.isFile())
+    .map((e) => `${e.parentPath}/${e.name}`.replace(/^\.\//, ""))
+    .filter((f) => !/(^|\/)(node_modules|\.git|target)\//.test(f))
     .filter(
       (f) =>
         f &&
