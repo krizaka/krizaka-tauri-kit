@@ -1,4 +1,4 @@
-# template-tauri-app
+# Tauri app template (`template/` of krizaka-tauri-kit)
 
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=krizaka_template-tauri-app&metric=coverage)](https://sonarcloud.io/summary/new_code?id=krizaka_template-tauri-app)
 
@@ -11,7 +11,7 @@ dropped and watched files, the Keychain session, the native menu, deep links, th
 `tauri-macos.yml`, and the decision is [ADR-005](https://github.com/krizaka/.github/blob/main/docs/adr/ADR-005-tauri-app-kit.md).
 
 ```bash
-# Create the product's repository from this template (« Use this template »), clone it, then:
+# Copy this folder into the product's new repository (npx degit krizaka/krizaka-tauri-kit/template my-app), then:
 node scripts/init.mjs yomizaka "Yomizaka"      # replaces __slug__ and __Name__
 pnpm install
 pnpm tauri icon src-tauri/icons/source.png      # the product's own mark: use brand/<product>/avatar-1024.png

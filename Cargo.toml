@@ -19,3 +19,4 @@ tempfile = "3"
 
 [workspace]
 members = ["plugin"]
+exclude = ["template"]

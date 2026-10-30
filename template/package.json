@@ -2,7 +2,7 @@
   "name": "__slug__-desktop",
   "private": true,
   "version": "0.1.0",
-  "description": "__Name__ for the Mac (Tauri 2), started from krizaka/template-tauri-app.",
+  "description": "__Name__ for the Mac (Tauri 2), started from krizaka/krizaka-tauri-kit/template.",
   "type": "module",
   "license": "Apache-2.0",
   "scripts": {
