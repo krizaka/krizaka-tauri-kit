@@ -19,13 +19,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  desktop:
-    permissions:
-      contents: write
-    uses: krizaka/.github/.github/workflows/tauri-macos.yml@eebba5e6e80145b0892af1742b5c09aa3d1560eb # main
+  desktop-pr:
+    # pull_request: unsigned, no secret passed (the shared workflow refuses one in this mode)
+    if: github.event_name == 'pull_request'
+    uses: krizaka/.github/.github/workflows/tauri-macos.yml@3f78a2d25b154a21cabbc5d57b8278f6b1ddf0f1 # main
     with:
       working-directory: .
       product-name: __Name__
+      sign: false
+
+  desktop-release:
+    # push of a desktop-v* tag: signed and notarised in the `release` environment, secrets passed by name
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+    uses: krizaka/.github/.github/workflows/tauri-macos.yml@3f78a2d25b154a21cabbc5d57b8278f6b1ddf0f1 # main
+    with:
+      working-directory: .
+      product-name: __Name__
+      sign: true
     secrets:
       APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
       APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
