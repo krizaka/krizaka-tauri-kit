@@ -1,0 +1,10 @@
+{
+  "name": "@krizaka/tauri-film",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The film of a Krizaka Mac app's journey: WebDriver frames of the window, collapsed, joined, trimmed. No dependency.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

@@ -1,0 +1,20 @@
+# The shared film tooling of the Mac apps' journeys (Yomizaka, Orazaka; krizaka-internal#230). It installs ffmpeg and exposes where
+# the tooling lives, so a journey imports `createFilm` / `client` from there and a job joins the frames:
+#
+#   - uses: krizaka/krizaka-tauri-kit/.github/actions/film@<sha>
+#     id: film
+#   - run: KRIZAKA_FILM_DIR=${{ steps.film.outputs.dir }} node scripts/desktop-journey.mjs ... --film
+#   - run: node "${{ steps.film.outputs.dir }}/join-cli.mjs" <out dir> <out>.mp4      # fails under 30 frames
+#   - run: node "${{ steps.film.outputs.dir }}/trim-cli.mjs" <dir with web clips>       # starts on the first meaningful frame
+name: Krizaka film tooling
+description: ffmpeg and the path of the film scripts (film.mjs, webdriver.mjs, join-cli.mjs, trim-cli.mjs).
+outputs:
+  dir:
+    description: Directory of the film scripts.
+    value: ${{ github.action_path }}/../../../film
+runs:
+  using: composite
+  steps:
+    - name: ffmpeg
+      shell: bash
+      run: command -v ffmpeg >/dev/null || { if [ "$RUNNER_OS" = "macOS" ]; then brew install ffmpeg; else sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; fi; }

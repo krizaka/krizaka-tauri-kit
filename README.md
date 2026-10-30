@@ -62,3 +62,11 @@ bar); never `fs`, `shell` or `opener`. The app registers the folder picker with 
 own); a plugin registered from inside another plugin's setup deadlocks Tauri. Start an app from [`template-tauri-app`](https://github.com/krizaka/template-tauri-app).
 
 Extracted from Orazaka Desktop (`krizaka/orazaka`, `apps/desktop`), whose tests came with it. macOS first (Apple Silicon, macOS 14+).
+
+## Film tooling (`film/`, `.github/actions/film`)
+
+The journeys of the Mac apps (Yomizaka, Orazaka) are filmed the same way, with one implementation: WebDriver screenshots of the
+app window (`film.mjs`, no screen recording, no macOS permission), collapsed (blank start cut, idle stretches held at most 1.2 s),
+joined into one mp4 (`join-cli.mjs`, refuses under 30 frames), the web clips trimmed (`trim-cli.mjs`), and a small client of the
+app's embedded WebDriver (`webdriver.mjs`). No dependency; `node --test film/test/*.test.mjs`. The composite action installs
+ffmpeg and outputs the directory.
