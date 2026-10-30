@@ -1,8 +1,8 @@
 //! Small secrets in the macOS Keychain: one generic password per key, service = the app's bundle id, account = the key.
 //! Never a file, never the page's storage.
 
+use crate::secrets::SecretStore;
 use keyring::Entry;
-use krizaka_tauri_kit::secrets::SecretStore;
 
 pub struct Keychain {
     service: String,

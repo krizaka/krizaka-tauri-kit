@@ -26,7 +26,6 @@
 //! - the update channel (`stable` / `beta`) and the feed it reads.
 
 mod commands;
-mod keychain;
 mod menu;
 mod watch;
 
@@ -202,7 +201,9 @@ impl Builder {
                 let scope = ScopeStore::load(&data_dir.join(SCOPE_FILE));
                 app.manage(Kit {
                     access: Mutex::new(Access::new(scope)),
-                    secrets: Box::new(Checked(keychain::Keychain::new(&app.config().identifier))),
+                    secrets: Box::new(Checked(krizaka_tauri_kit::keychain::Keychain::new(
+                        &app.config().identifier,
+                    ))),
                     links: LinkRules {
                         scheme,
                         hosts,

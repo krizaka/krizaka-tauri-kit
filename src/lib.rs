@@ -8,12 +8,16 @@
 //! - [`deep_link`]: `product://…` and the product's web links become a route inside the app, or are refused.
 //! - [`menu`]: the native menu bar the page describes, checked before it is built.
 //! - [`secrets`]: small secrets (the session token) and their rules; the Keychain store is in the plugin.
+//! - [`device_flow`]: the OAuth device flow (GitHub first) with the tokens in the Keychain, refreshed, signed out locally.
 //! - [`settings`]: small JSON files written atomically.
 //! - [`update`]: the update channel (`stable`, `beta`) and its feed.
 
 pub mod access;
 pub mod deep_link;
+pub mod device_flow;
 pub mod files;
+#[cfg(feature = "keychain")]
+pub mod keychain;
 pub mod menu;
 pub mod nav_guard;
 pub mod scope;
