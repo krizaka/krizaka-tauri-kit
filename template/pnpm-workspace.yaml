@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - '@krizaka/tailwind@3.46.0'
+  - '@krizaka/tokens@3.46.0'
+  - '@krizaka/ui@3.46.0'
