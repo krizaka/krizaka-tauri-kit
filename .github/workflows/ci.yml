@@ -31,3 +31,18 @@ jobs:
         with:
           node-version: 24
       - run: node --test film/test/*.test.mjs
+
+  # The one check main requires (org profile: « CI gate »); it always reports and fails when a leg failed or was skipped.
+  gate:
+    name: CI gate
+    if: ${{ always() }}
+    needs: [ci, film]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Every leg succeeded
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          for r in $RESULTS; do [ "$r" = success ] || { echo "a leg ended $r"; exit 1; }; done
