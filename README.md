@@ -59,7 +59,7 @@ tauri::Builder::default()
 
 The window's capability lists `krizaka:default` (and `core:window:allow-start-dragging` for `AppShell desktop`'s title
 bar); never `fs`, `shell` or `opener`. The app registers the folder picker with `tauri_plugin_krizaka::dialog::init()` (re-exported: no dependency of its
-own); a plugin registered from inside another plugin's setup deadlocks Tauri. Start an app from [`template-tauri-app`](https://github.com/krizaka/template-tauri-app).
+own); a plugin registered from inside another plugin's setup deadlocks Tauri. Start an app from [`template/`](template) (`npx degit krizaka/krizaka-tauri-kit/template my-app`; it was the `template-tauri-app` repository until 2026-10-30).
 
 Extracted from Orazaka Desktop (`krizaka/orazaka`, `apps/desktop`), whose tests came with it. macOS first (Apple Silicon, macOS 14+).
 

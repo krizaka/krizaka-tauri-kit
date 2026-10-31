@@ -9,7 +9,7 @@
   `tauri` dependency, tested on any machine. The **glue** that applies them (commands, events, the Keychain, the native
   menu, `RunEvent::Opened`) is `plugin/` (`tauri-plugin-krizaka`); it decides nothing the root crate does not check.
 - Not here: a product's commands, its sidecar, its messages, its brand. Those are the product's, wired from
-  `template-tauri-app`. The page side of the plugin is `@krizaka/app-desktop` (krizaka-ui): its `COMMANDS` list and
+  `template/` (ex `template-tauri-app`). The page side of the plugin is `@krizaka/app-desktop` (krizaka-ui): its `COMMANDS` list and
   `plugin/build.rs` change together.
 
 ## Rules
