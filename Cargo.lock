@@ -2085,9 +2085,10 @@ dependencies = [
 
 [[package]]
 name = "krizaka-tauri-kit"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "base64 0.23.1",
+ "keyring",
  "serde",
  "serde_json",
  "tempfile",
@@ -3895,9 +3896,8 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-krizaka"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
- "keyring",
  "krizaka-tauri-kit",
  "notify",
  "serde",
